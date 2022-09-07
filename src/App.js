@@ -8,6 +8,8 @@ import Footer from "./Components/Shared/Footer";
 import Header from "./Components/Shared/Header";
 import ServiceDetails from "./Components/pages/ServiceDetails/ServiceDetails";
 import Register from "./Components/pages/Login/Register";
+import RequireAuth from "./Components/pages/Login/RequireAuth";
+import Checkout from "./Components/pages/Checkout/Checkout";
 
 function App() {
   return (
@@ -20,6 +22,14 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/checkout"
+          element={
+            <RequireAuth>
+              <Checkout />
+            </RequireAuth>
+          }
+        />
         <Route path="/*" element={<NotFound />} />
       </Routes>
       <Footer />

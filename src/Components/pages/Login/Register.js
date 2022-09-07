@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import auth from "../../../firebase.init";
 
 const Register = () => {
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,6 +30,7 @@ const Register = () => {
 
     if (password === confirmPassword) {
     }
+    createUserWithEmailAndPassword(email, password);
     console.log(name, email, password, confirmPassword);
   };
   return (

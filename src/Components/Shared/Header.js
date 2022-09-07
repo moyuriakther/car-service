@@ -2,8 +2,18 @@ import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo-black.png";
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
+import { signOut } from "firebase/auth";
 
 const Header = () => {
+  const [user] = useAuthState(auth);
+  const handleLogOut = () => {
+    signOut(auth).then(() => {
+      console.log("sign out");
+    });
+  };
+  console.log(user);
   return (
     <Navbar
       sticky="top"
@@ -24,7 +34,13 @@ const Header = () => {
             <Link to="/about">About</Link>
           </Nav>
           <Nav>
-            <Link to="/login">Login</Link>
+            {user?.uid ? (
+              <Link to="/" onClick={handleLogOut}>
+                Logout
+              </Link>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

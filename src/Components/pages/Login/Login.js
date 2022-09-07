@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import auth from "../../../firebase.init";
 
 const Login = () => {
+  const [signInWithEmailAndPassword, user] =
+    useSignInWithEmailAndPassword(auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  console.log(from);
   const handleBlur = (e) => {
     if (e.target.name === "email") {
       setEmail(e.target.value);
@@ -16,7 +24,11 @@ const Login = () => {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     console.log(email, password);
+    signInWithEmailAndPassword(email, password);
   };
+  if (user) {
+    navigate(from, { replace: true });
+  }
   return (
     <div className="w-50 m-auto my-5">
       <h1 className="text-center">Login</h1>{" "}
