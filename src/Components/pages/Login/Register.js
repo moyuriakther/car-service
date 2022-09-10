@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useCreateUserWithEmailAndPassword,
+  useUpdateProfile,
+} from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
+import SocialLogin from "./SocialLogin";
 
 const Register = () => {
   const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
+    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+  const [updateProfile, updating, profileError] = useUpdateProfile(auth);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [agree, setAgree] = useState(false);
+
+  const navigate = useNavigate();
+
   const handleBlur = (e) => {
     if (e.target.name === "name") {
       setName(e.target.value);
@@ -25,76 +34,88 @@ const Register = () => {
       setConfirmPassword(e.target.value);
     }
   };
-  const handleRegisterSubmit = (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-
     if (password === confirmPassword) {
+      await createUserWithEmailAndPassword(email, password);
+      await updateProfile({ displayName: name });
+      console.log("updated profile");
+      navigate("/login");
+      console.log(name, email, password, confirmPassword);
     }
-    createUserWithEmailAndPassword(email, password);
-    console.log(name, email, password, confirmPassword);
   };
   return (
     <div className="w-50 m-auto my-5">
       <h1 className="text-center">Register</h1>{" "}
       <Form onSubmit={handleRegisterSubmit}>
         <Form.Group className="mb-3" controlId="formBasicName">
-          <Form.Label>Full Name</Form.Label>
           <Form.Control
             onBlur={handleBlur}
             name="name"
             type="text"
-            placeholder="Enter name"
+            placeholder="Your name"
             required
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
           <Form.Control
             onBlur={handleBlur}
             name="email"
             type="email"
-            placeholder="Enter email"
+            placeholder="Your email"
             required
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
           <Form.Control
             onBlur={handleBlur}
             name="password"
             type="password"
-            placeholder="Password"
+            placeholder="Your Password"
             required
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             onBlur={handleBlur}
             name="confirmPassword"
             type="password"
-            placeholder="Password"
+            placeholder="Confirm Password"
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
+        <input
+          onClick={() => setAgree(!agree)}
+          type="checkbox"
+          name="checkbox"
+          id="terms"
+        />
+        <label
+          //   className={agree ? "ps-2" : "ps-2 text-danger"}
+          className={`ps-2 ${agree ? "" : "text-danger"}`}
+          htmlFor="terms"
+        >
+          Accept Terms and Conditions
+        </label>{" "}
+        <br />
+        <Button
+          disabled={!agree}
+          className="w-50 my-2"
+          variant="primary"
+          type="Register"
+        >
+          Register
+        </Button>
         <Form.Group>
           <p>
             Already Have An Account?{" "}
-            <Link to="/login" className="text-decoration-none text-danger">
-              Login
+            <Link to="/login" className="text-decoration-none text-primary">
+              Please Login
             </Link>
           </p>
         </Form.Group>
-        <Button variant="primary" type="Register">
-          Please Register
-        </Button>
       </Form>
+      <SocialLogin />
     </div>
   );
 };
