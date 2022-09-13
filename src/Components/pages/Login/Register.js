@@ -7,6 +7,9 @@ import {
 } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
 import SocialLogin from "./SocialLogin";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PageTitle from "../../Shared/PageTitle/PageTitle";
 
 const Register = () => {
   const [createUserWithEmailAndPassword, user, loading, error] =
@@ -39,13 +42,15 @@ const Register = () => {
     if (password === confirmPassword) {
       await createUserWithEmailAndPassword(email, password);
       await updateProfile({ displayName: name });
-      console.log("updated profile");
+      toast("Send Email Verification");
+      toast("updated profile");
       navigate("/login");
       console.log(name, email, password, confirmPassword);
     }
   };
   return (
     <div className="w-50 m-auto my-5">
+      <PageTitle title={"register"} />
       <h1 className="text-center">Register</h1>{" "}
       <Form onSubmit={handleRegisterSubmit}>
         <Form.Group className="mb-3" controlId="formBasicName">
@@ -116,6 +121,7 @@ const Register = () => {
         </Form.Group>
       </Form>
       <SocialLogin />
+      <ToastContainer />
     </div>
   );
 };
