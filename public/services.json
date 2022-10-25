@@ -1,34 +1,29 @@
 [
   {
-    "id": 1,
     "name": "ENGINE DIAGNOSTIC",
     "price": "200",
     "img": "https://i.ibb.co/dGDkr4v/1.jpg",
     "description": "Drive plug opportunities viral ethical methods expedite"
   },
   {
-    "id": 2,
     "name": "CAR & ENGINE CLEAN",
     "price": "300",
     "img": "https://i.ibb.co/tY8dmnP/2.jpg",
     "description": "Drive plug opportunities viral ethical methods expedite"
   },
   {
-    "id": 3,
     "name": "AUTO CAR REPAIR",
     "price": "250",
     "img": "https://i.ibb.co/Yh04YVw/3.jpg",
     "description": "Drive plug opportunities viral ethical methods expedite"
   },
   {
-    "id": 4,
     "name": "ELECTRICAL SYSTEM",
     "price": "400",
     "img": "https://i.ibb.co/ZX2Cbkn/4.jpg",
     "description": "Drive plug opportunities viral ethical methods expedite"
   },
   {
-    "id": 5,
     "name": "ENGINE DIAGNOSTIC",
     "price": "500",
     "img": "https://i.ibb.co/FgQ3jXp/5.jpg",

@@ -4,23 +4,27 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   useSignInWithEmailAndPassword,
   useSendPasswordResetEmail,
+  useAuthState,
 } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
 import SocialLogin from "./SocialLogin";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PageTitle from "../../Shared/PageTitle/PageTitle";
+import useToken from "../../../hooks/useToken";
 
 const Login = () => {
-  const [signInWithEmailAndPassword, user] =
-    useSignInWithEmailAndPassword(auth);
-  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail, sending, error] =
+    useSendPasswordResetEmail(auth);
+  const [user] = useAuthState(auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  console.log(from);
+  const [token] = useToken(user);
+  // console.log(user);
   const handleBlur = (e) => {
     if (e.target.name === "email") {
       setEmail(e.target.value);
@@ -29,13 +33,29 @@ const Login = () => {
       setPassword(e.target.value);
     }
   };
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
-    signInWithEmailAndPassword(email, password);
+    // console.log(email, password);
+    await signInWithEmailAndPassword(email, password);
+
+    // const { data } = await axios.post("http://localhost:8080/login", {
+    //   email,
+    // });
+    // localStorage.setItem("accessToken", data.accessToken);
+    // console.log(data);
   };
-  if (user) {
+  if (token) {
     navigate(from, { replace: true });
+  }
+  if (sending) {
+    return <p>Sending...</p>;
+  }
+  if (error) {
+    return (
+      <div>
+        <p>Error: {error.message}</p>
+      </div>
+    );
   }
   const resetPassword = async () => {
     if (email) {
@@ -47,7 +67,7 @@ const Login = () => {
   };
   return (
     <div className="w-50 m-auto my-5">
-       <PageTitle title={"login"} />
+      <PageTitle title={"login"} />
       <h1 className="text-center">Login</h1>{" "}
       <Form onSubmit={handleLoginSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -89,7 +109,6 @@ const Login = () => {
         </Button>
       </Form>
       <SocialLogin />
-      <ToastContainer />
     </div>
   );
 };

@@ -7,15 +7,21 @@ import {
   useSignInWithGithub,
   useSignInWithGoogle,
   useSignInWithFacebook,
+  useAuthState,
 } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useToken from "../../../hooks/useToken";
 
 const SocialLogin = () => {
-  const [signInWithGoogle, error, user] = useSignInWithGoogle(auth);
-  const [signInWithFacebook, error1, user1] = useSignInWithFacebook(auth);
-  const [signInWithGithub, error2, user2] = useSignInWithGithub(auth);
+  const [signInWithGoogle, error] = useSignInWithGoogle(auth);
+  const [signInWithFacebook, error1] = useSignInWithFacebook(auth);
+  const [signInWithGithub, error2] = useSignInWithGithub(auth);
+  const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const [token] = useToken(user);
   let errorElement;
   if (error || error1 || error2) {
     errorElement = (
@@ -24,9 +30,9 @@ const SocialLogin = () => {
       </p>
     );
   }
-  console.log(user, user1, user2, error, error1, error2);
-  if (user || user1 || user2) {
-    // navigate("/home");
+  // console.log(user, error, error1, error2, location);
+  if (token) {
+    navigate(from, { replace: true });
   }
   return (
     <div>

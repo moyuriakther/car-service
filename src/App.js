@@ -10,7 +10,12 @@ import ServiceDetails from "./Components/pages/ServiceDetails/ServiceDetails";
 import Register from "./Components/pages/Login/Register";
 import RequireAuth from "./Components/pages/Login/RequireAuth";
 import Checkout from "./Components/pages/Checkout/Checkout";
-
+import MyLocation from "./Components/pages/MyLocation/MyLocation";
+import AddService from "./Components/pages/AddService/AddService";
+import ManageServices from "./Components/pages/ManageServices/ManageServices";
+import UpdateService from "./Components/pages/UpdateService/UpdateService";
+import { ToastContainer } from "react-toastify";
+import Order from "./Components/pages/Order/Order";
 function App() {
   return (
     <div className="app">
@@ -22,17 +27,51 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/location" element={<MyLocation />} />
         <Route
-          path="/checkout"
+          path="/checkout/:serviceId"
           element={
             <RequireAuth>
               <Checkout />
             </RequireAuth>
           }
         />
+        <Route
+          path="/addservice"
+          element={
+            <RequireAuth>
+              <AddService />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/manage"
+          element={
+            <RequireAuth>
+              <ManageServices />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <RequireAuth>
+              <Order />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/update/:id"
+          element={
+            <RequireAuth>
+              <UpdateService />
+            </RequireAuth>
+          }
+        />
         <Route path="/*" element={<NotFound />} />
       </Routes>
       <Footer />
+      <ToastContainer />
     </div>
   );
 }

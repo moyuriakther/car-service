@@ -3,7 +3,7 @@ import { Button, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Service = ({ service }) => {
-  const { id, name, price, img, description } = service;
+  const { name, price, img, description } = service;
   const navigate = useNavigate();
   const handleDetail = (id) => {
     navigate(`/service/${id}`);
@@ -17,8 +17,11 @@ const Service = ({ service }) => {
           <strong>$ {price}</strong>
         </p>
         <p>{description}</p>
-        <Button className="btn btn-primary" onClick={() => handleDetail(id)}>
-          Details
+        <Button
+          className="btn btn-primary"
+          onClick={() => handleDetail(service._id)}
+        >
+          Add Service
         </Button>
       </div>
     </Col>

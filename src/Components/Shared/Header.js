@@ -13,7 +13,7 @@ const Header = () => {
       console.log("sign out");
     });
   };
-  console.log(user);
+  // console.log(user);
   return (
     <Navbar
       sticky="top"
@@ -34,6 +34,13 @@ const Header = () => {
             <Link to="/about">About</Link>
           </Nav>
           <Nav>
+            {user && (
+              <>
+                <Link to="/addservice">Add Service</Link>
+                <Link to="/manage">Manage Services</Link>
+                <Link to="/orders">Orders</Link>
+              </>
+            )}
             {user?.uid ? (
               <Link to="/" onClick={handleLogOut}>
                 Logout

@@ -1,28 +1,37 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
+  useAuthState,
   useCreateUserWithEmailAndPassword,
   useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
 import SocialLogin from "./SocialLogin";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PageTitle from "../../Shared/PageTitle/PageTitle";
+import useToken from "../../../hooks/useToken";
 
 const Register = () => {
-  const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
-  const [updateProfile, updating, profileError] = useUpdateProfile(auth);
+  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(
+    auth,
+    { sendEmailVerification: true }
+  );
+  const [updateProfile] = useUpdateProfile(auth);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
-
+  const [user] = useAuthState(auth);
+  const [token] = useToken(user);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  if (token) {
+    navigate(from, { replace: true });
+  }
   const handleBlur = (e) => {
     if (e.target.name === "name") {
       setName(e.target.value);
@@ -44,8 +53,7 @@ const Register = () => {
       await updateProfile({ displayName: name });
       toast("Send Email Verification");
       toast("updated profile");
-      navigate("/login");
-      console.log(name, email, password, confirmPassword);
+      // console.log(name, email, password, confirmPassword);
     }
   };
   return (
@@ -121,7 +129,6 @@ const Register = () => {
         </Form.Group>
       </Form>
       <SocialLogin />
-      <ToastContainer />
     </div>
   );
 };
