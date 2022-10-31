@@ -14,7 +14,7 @@ const Order = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axiosPrivate
-      .get(`http://localhost:8080/order?email=${email}`)
+      .get(`https://car-service-backend.onrender.com/order?email=${email}`)
       .then((res) => setOrders(res.data))
       .catch((err) => {
         console.log(err);

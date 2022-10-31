@@ -6,7 +6,7 @@ const useServiceDetail = (serviceId) => {
   //   console.log(service);
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/service/${serviceId}`)
+      .get(`https://car-service-backend.onrender.com/service/${serviceId}`)
       .then((res) => setService(res.data));
   }, [serviceId]);
   return [service];

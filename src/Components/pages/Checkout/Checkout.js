@@ -27,7 +27,7 @@ const Checkout = () => {
     };
     console.log(user, order);
     axios
-      .post("http://localhost:8080/order", order)
+      .post("https://car-service-backend.onrender.com/order", order)
       .then((res) => {
         const data = res.data;
         if (data.insertedId) {

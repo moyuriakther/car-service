@@ -7,7 +7,7 @@ const AddService = () => {
   const onSubmit = (data) => {
     console.log(data);
     axios
-      .post("http://localhost:8080/service", data, {
+      .post("https://car-service-backend.onrender.com/service", data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "JWT fefege...",

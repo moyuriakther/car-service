@@ -8,9 +8,12 @@ const useToken = (user) => {
   useEffect(() => {
     const getToken = async () => {
       if (email) {
-        const { data } = await axios.post("http://localhost:8080/login", {
-          email,
-        });
+        const { data } = await axios.post(
+          "https://car-service-backend.onrender.com/login",
+          {
+            email,
+          }
+        );
         localStorage.setItem("accessToken", data.accessToken);
         setToken(data.accessToken);
       }

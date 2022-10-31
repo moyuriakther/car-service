@@ -7,13 +7,6 @@ import PageTitle from "../../Shared/PageTitle/PageTitle";
 const ServiceDetails = () => {
   const { serviceId } = useParams();
   const [service] = useServiceDetail(serviceId);
-  // const [service, setService] = useState({});
-  // console.log(service);
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:8080/service/${serviceId}`)
-  //     .then((res) => setService(res.data));
-  // }, []);
   return (
     <div className="d-flex justify-content-center my-3">
       <div>

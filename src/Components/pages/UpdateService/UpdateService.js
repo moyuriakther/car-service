@@ -8,7 +8,7 @@ const UpdateService = () => {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
     axios
-      .put(`http://localhost:8080/service/${id}`, data, {
+      .put(`https://car-service-backend.onrender.com/service/${id}`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "JWT fefege...",
